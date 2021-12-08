@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-let UpdatesSchema = new mongoose.Schema({
+let UpdatesSchema = new Schema({
   description: { type: String, required: true },
   image: String,
   updatingUser: {
