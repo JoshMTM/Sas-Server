@@ -4,7 +4,7 @@ const Updates = require("../models/Updates.model");
 
 // View routes:
 
-// dreams list (read)
+// updates/post list (read)
 router.get("/updates", (req, res, next) => {
   Updates.find()
     .populate("updatedDream")
@@ -37,7 +37,7 @@ router.get("/update/:updateId", (req, res, next) => {
 });
 
 // Posts/Update Create (create)
-router.post("/dreams/new", (req, res, next) => {
+router.post("/updates/new", (req, res, next) => {
   const { description, image, updatingUser, updatedDream, comments, likes } =
     req.body;
   console.log(req.body);
