@@ -1,16 +1,16 @@
 const router = require("express").Router();
 
-const Dreams = require("../models/Dreams.model");
+const Comments = require("../models/Comments.model");
 
 // View routes:
 
 // dreams list (read)
-router.get("/dreams", (req, res, next) => {
-  Dreams.find()
-    .populate("items")
-    .populate("dreamer")
-    .then((dreams) => {
-      res.status(200).json(dreams);
+router.get("/comments", (req, res, next) => {
+  Comments.find()
+    .populate("commentedDream")
+    .populate("commentingUser")
+    .then((comments) => {
+      res.status(200).json(comments);
     })
     .catch((err) => {
       res.status(500).json({
@@ -21,9 +21,10 @@ router.get("/dreams", (req, res, next) => {
 });
 
 // one Dream  (read)
-router.get("/dreams/:dreamId", (req, res, next) => {
-  Dreams.findById(req.params.dreamId)
-    .populate(items)
+router.get("/comments/:dreamId", (req, res, next) => {
+  Comments.findById(req.params.dreamId)
+    .populate(commentedDream)
+    .populate(commentingUser)
     .then((response) => {
       res.status(200).json(response);
     })
@@ -35,16 +36,15 @@ router.get("/dreams/:dreamId", (req, res, next) => {
     });
 });
 
-// Dreams Create (create)
-router.post("/dreams/new", (req, res, next) => {
-  const { title, description, image, items, dreamer } = req.body;
+// Comments Create (create)
+router.post("/comments/new", (req, res, next) => {
+  const { text, commentingUser, commentedDream, date } = req.body;
   console.log(req.body);
-  Dreams.create({
-    title,
-    description,
-    image,
-    dreamer,
-    items,
+  Comments.create({
+    text,
+    commentingUser,
+    commentedDream,
+    date,
   })
     .then((response) => {
       res.status(200).json(response);
@@ -57,13 +57,13 @@ router.post("/dreams/new", (req, res, next) => {
     });
 });
 
-// Dream Update
-router.patch("/dreams/edit/:id", (req, res, next) => {
+// Comments Update
+router.patch("/comments/edit/:id", (req, res, next) => {
   const { id } = req.params;
-  const { title, description, image, items, dreamer } = req.body;
-  Dreams.findByIdAndUpdate(
+  const { text, commentingUser, commentedDream, date } = req.body;
+  Comments.findByIdAndUpdate(
     id,
-    { $set: { title, description, image, items, dreamer } },
+    { $set: { text, commentingUser, commentedDream, date } },
     { new: true }
   )
     .then((response) => {
@@ -77,10 +77,10 @@ router.patch("/dreams/edit/:id", (req, res, next) => {
     });
 });
 
-// Dream delete
-router.delete("/dreams/delete/:id", (req, res, next) => {
+// Comment delete
+router.delete("/comments/delete/:id", (req, res, next) => {
   const id = req.params.id;
-  Dreams.findByIdAndDelete(id)
+  Comments.findByIdAndDelete(id)
     .then((response) => {
       res.status(200).json(response);
     })

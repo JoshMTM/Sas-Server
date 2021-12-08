@@ -61,7 +61,7 @@ router.post("/dreams/new", (req, res, next) => {
 router.patch("/dreams/edit/:id", (req, res, next) => {
   const { id } = req.params;
   const { title, description, image, items, dreamer } = req.body;
-  Dreams.findByIdAndUpdate(
+  Dream.findByIdAndUpdate(
     id,
     { $set: { title, description, image, items, dreamer } },
     { new: true }

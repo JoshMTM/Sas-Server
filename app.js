@@ -45,11 +45,21 @@ app.use(
 // Contrary to the views version, all routes are controlled from the routes/index.js
 const allRoutes = require("./routes");
 app.use("/api", allRoutes);
-const dreamsRoutes = require("./routes/dreams.routes");
-app.use("/api", dreamsRoutes);
 
 const authRoutes = require("./routes/auth.routes");
 app.use("/api", authRoutes);
+
+const dreamsRoutes = require("./routes/dreams.routes");
+app.use("/api", dreamsRoutes);
+
+const commentsRoutes = require("./routes/comments.routes");
+app.use("/api", commentsRoutes);
+
+const updatesRoutes = require("./routes/updates.routes");
+app.use("/api", updatesRoutes);
+
+const itemsRoutes = require("./routes/items.routes");
+app.use("/api", itemsRoutes);
 
 const fileUploadRoutes = require("./routes/file-upload.routes");
 app.use("/api", fileUploadRoutes);
