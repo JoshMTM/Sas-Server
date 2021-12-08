@@ -1,6 +1,5 @@
 const path = require("path");
 const router = require("express").Router();
-const multer = require("multer");
 
 const Dreams = require("../models/Dreams.model");
 
@@ -22,8 +21,8 @@ router.get("/dreams", (req, res, next) => {
     });
 });
 
-// Dreams new form (read)
-router.get("/dreams/new", (req, res, next) => {
+// one Dream  (read)
+router.get("/dreams/:dreamId", (req, res, next) => {
   Dreams.findById(req.params.dreamId)
     .populate(items)
     .then((response) => {
@@ -37,32 +36,19 @@ router.get("/dreams/new", (req, res, next) => {
     });
 });
 
-// Dreams read detail (read)
-router.get("/dreams/:dreamId", (req, res, next) => {
-  const id = req.params.id;
-  const user = req.session.myProperty;
-
-  Dreams.findById(id)
-    .populate("dreamer")
-    .then((dream) => {
-      if (user) {
-        const isDreamer = user._id == dream.dreamer._id;
-        const { firstName, lastName } = dream.dreamer;
-        res
-          .status(200)
-          .json(response, {
-            dream,
-            isDreamer,
-            firstName,
-            lastName,
-          })
-          .catch((err) => {
-            res.status(500).json({
-              error: "You need to be logged in to view details",
-              message: err,
-            });
-          });
-      }
+// Dreams Create (create)
+router.post("/dreams/new", (req, res, next) => {
+  const { title, description, image, items, dreamer } = req.body;
+  console.log(req.body);
+  Dreams.create({
+    title,
+    description,
+    image,
+    dreamer,
+    items,
+  })
+    .then((response) => {
+      res.status(200).json(response);
     })
     .catch((err) => {
       res.status(500).json({
@@ -72,84 +58,54 @@ router.get("/dreams/:dreamId", (req, res, next) => {
     });
 });
 
-// Services edit form (read)
-router.get("/services/edit/:id", (req, res, next) => {
-  const id = req.params.id;
-  Service.findById(id)
-    .then((service) => res.render("services/form", { service }))
-    .catch((err) => next(err));
-});
-
-// Image download (read)
-router.get("/services/images/:filename", (req, res, next) => {
-  const filename = req.params.filename;
-  const filepath = path.join(pathUploads, filename);
-  res.sendFile(filepath, { headers: { "content-type": "image/png" } });
-});
-
-// Database routes:
-
-// Service Create
-router.post(
-  "/services/new",
-  uploader.single("serviceImage"),
-  (req, res, next) => {
-    const {
-      name,
-      description,
-      category,
-      address,
-      time,
-      price,
-      serviceImage,
-      requesters,
-    } = req.body;
-    Service.create({
-      name,
-      serviceProvider: req.session.myProperty._id,
-      category,
-      description,
-      address,
-      time,
-      price,
-      serviceImage: req.file.path,
-      requesters,
+// Dream Update
+router.patch("/dreams/edit/:id", (req, res, next) => {
+  const { id } = req.params;
+  const { title, description, image, items, dreamer } = req.body;
+  Dream.findByIdAndUpdate(
+    id,
+    { $set: { title, description, image, items, dreamer } },
+    { new: true }
+  )
+    .then((response) => {
+      res.status(200).json(response);
     })
-      .then(() => res.redirect("/services"))
-      .catch((err) => next(err));
-  }
-);
-// Service Update
-router.post(
-  "/api/services/:id",
-  upload.single("serviceImage"),
-  (req, res, next) => {
-    const id = req.params.id;
-    const service = req.body;
-    Service.findByIdAndUpdate(id, service)
-      .then(() => res.redirect("/services/" + id))
-      .catch((err) => next(err));
-  }
-);
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong, Update unsuccessful",
+        message: err,
+      });
+    });
+});
 
-// Delete Service
-router.get("/api/services/delete/:id", (req, res, next) => {
+// Dream delete
+router.delete("/dreams/delete/:id", (req, res, next) => {
   const id = req.params.id;
-  Service.findByIdAndDelete(id)
-    .then(() => res.redirect("/services"))
-    .catch((err) => next(err));
+  Dreams.findByIdAndDelete(id)
+    .then((response) => {
+      res.status(200).json(response);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Could not delete the dream",
+        message: err,
+      });
+    });
 });
 
 //Search by category
-router.get("/servicesearch", (req, res, next) => {
+router.get("/dreamsearch", (req, res, next) => {
   const { category } = req.query;
-  Service.find({ category })
-    .populate("serviceProvider")
-    .then((services) => {
-      res.render("services/list", { services });
+  Dreams.find({ category })
+    .populate("dreamer")
+    .then((dreams) => {
+      res.status(200).json(dreams);
     })
     .catch((err) => {
-      next(err);
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
     });
 });
 
