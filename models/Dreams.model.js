@@ -5,7 +5,10 @@ let dreamsSchema = new mongoose.Schema({
   description: String,
   date: string,
   image: String,
-  items: { type: String },
+  items: {
+    type: Schema.Types.ObjectId,
+    ref: "Items",
+  },
 });
 
 const Dreams = model("Dreams", dreamsSchema);
