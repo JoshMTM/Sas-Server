@@ -7,6 +7,8 @@ let UpdatesSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+
+  //Which dream does the comment belongs to??
   updatedDream: {
     type: Schema.Types.ObjectId,
     ref: "Dream",
@@ -19,6 +21,7 @@ let UpdatesSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Comments",
   },
+  likes: Number,
 });
 
 const Updates = model("Updates", UpdatesSchema);

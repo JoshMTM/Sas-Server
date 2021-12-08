@@ -1,16 +1,16 @@
 const router = require("express").Router();
 
-const Dreams = require("../models/Dreams.model");
+const Updates = require("../models/Updates.model");
 
 // View routes:
 
 // dreams list (read)
-router.get("/dreams", (req, res, next) => {
-  Dreams.find()
-    .populate("items")
-    .populate("dreamer")
-    .then((dreams) => {
-      res.status(200).json(dreams);
+router.get("/updates", (req, res, next) => {
+  Updates.find()
+    .populate("updatedDream")
+    .populate("comments")
+    .then((updates) => {
+      res.status(200).json(updates);
     })
     .catch((err) => {
       res.status(500).json({
@@ -20,10 +20,11 @@ router.get("/dreams", (req, res, next) => {
     });
 });
 
-// one Dream  (read)
-router.get("/dreams/:dreamId", (req, res, next) => {
-  Dreams.findById(req.params.dreamId)
-    .populate(items)
+// one Post/Update  (read)
+router.get("/update/:updateId", (req, res, next) => {
+  Updates.findById(req.params.dreamId)
+    .populate("updatedDream")
+    .populate("comments")
     .then((response) => {
       res.status(200).json(response);
     })
@@ -35,16 +36,18 @@ router.get("/dreams/:dreamId", (req, res, next) => {
     });
 });
 
-// Dreams Create (create)
+// Posts/Update Create (create)
 router.post("/dreams/new", (req, res, next) => {
-  const { title, description, image, items, dreamer } = req.body;
+  const { description, image, updatingUser, updatedDream, comments, likes } =
+    req.body;
   console.log(req.body);
-  Dreams.create({
-    title,
+  Updates.create({
     description,
     image,
-    dreamer,
-    items,
+    updatingUser,
+    updatedDream,
+    comments,
+    likes,
   })
     .then((response) => {
       res.status(200).json(response);
@@ -57,13 +60,23 @@ router.post("/dreams/new", (req, res, next) => {
     });
 });
 
-// Dream Update
-router.patch("/dreams/edit/:id", (req, res, next) => {
+// Post/Update Edit
+router.patch("/updates/edit/:id", (req, res, next) => {
   const { id } = req.params;
-  const { title, description, image, items, dreamer } = req.body;
-  Dream.findByIdAndUpdate(
+  const { description, image, updatingUser, updatedDream, comments, likes } =
+    req.body;
+  Updates.findByIdAndUpdate(
     id,
-    { $set: { title, description, image, items, dreamer } },
+    {
+      $set: {
+        description,
+        image,
+        updatingUser,
+        updatedDream,
+        comments,
+        likes,
+      },
+    },
     { new: true }
   )
     .then((response) => {
@@ -71,38 +84,22 @@ router.patch("/dreams/edit/:id", (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).json({
-        error: "Something went wrong, Update unsuccessful",
+        error: "Something went wrong, Post edit unsuccessful",
         message: err,
       });
     });
 });
 
-// Dream delete
-router.delete("/dreams/delete/:id", (req, res, next) => {
+// Post/Update delete
+router.delete("/updates/delete/:id", (req, res, next) => {
   const id = req.params.id;
-  Dreams.findByIdAndDelete(id)
+  Updates.findByIdAndDelete(id)
     .then((response) => {
       res.status(200).json(response);
     })
     .catch((err) => {
       res.status(500).json({
         error: "Could not delete the dream",
-        message: err,
-      });
-    });
-});
-
-//Search by category
-router.get("/dreamsearch", (req, res, next) => {
-  const { category } = req.query;
-  Dreams.find({ category })
-    .populate("dreamer")
-    .then((dreams) => {
-      res.status(200).json(dreams);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        error: "Something went wrong",
         message: err,
       });
     });
