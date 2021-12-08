@@ -22,8 +22,8 @@ router.get("/dreams", (req, res, next) => {
     });
 });
 
-// Services new form (read)
-router.get("/dreams/:dreamId", (req, res, next) => {
+// Dreams new form (read)
+router.get("/dreams/new", (req, res, next) => {
   Dreams.findById(req.params.dreamId)
     .populate(items)
     .then((response) => {
@@ -37,32 +37,39 @@ router.get("/dreams/:dreamId", (req, res, next) => {
     });
 });
 
-// Services read detail (read)
-router.get("/services/:id", (req, res, next) => {
+// Dreams read detail (read)
+router.get("/dreams/:dreamId", (req, res, next) => {
   const id = req.params.id;
   const user = req.session.myProperty;
 
-  Service.findById(id)
-    .populate("serviceProvider")
-    .then((service) => {
+  Dreams.findById(id)
+    .populate("dreamer")
+    .then((dream) => {
       if (user) {
-        const isServiceProvider = user._id == service.serviceProvider._id;
-        const { firstName, lastName } = service.serviceProvider;
-        res.render("services/detail", {
-          service,
-          isServiceProvider,
-          firstName,
-          lastName,
-        });
-      } else {
-        res.render("user/signin-form.hbs", {
-          error:
-            "You need to log In or signup in order to view the details of every service and make a request",
-        });
-        return;
+        const isDreamer = user._id == dream.dreamer._id;
+        const { firstName, lastName } = dream.dreamer;
+        res
+          .status(200)
+          .json(response, {
+            dream,
+            isDreamer,
+            firstName,
+            lastName,
+          })
+          .catch((err) => {
+            res.status(500).json({
+              error: "You need to be logged in to view details",
+              message: err,
+            });
+          });
       }
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
 });
 
 // Services edit form (read)

@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose");
 let dreamsSchema = new Schema({
   title: { type: String, required: true },
   description: String,
-  date: string,
+  date: String,
   image: String,
   items: {
     type: Schema.Types.ObjectId,
