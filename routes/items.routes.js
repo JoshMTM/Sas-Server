@@ -55,7 +55,7 @@ router.post("/items/new", (req, res, next) => {
     });
 });
 
-// Dream Update
+// Item Update
 router.patch("/items/edit/:id", (req, res, next) => {
   const { id } = req.params;
   const { name, description, qty, unit, dream } = req.body;
@@ -75,7 +75,7 @@ router.patch("/items/edit/:id", (req, res, next) => {
     });
 });
 
-// Dream delete
+// Item delete
 router.delete("/items/delete/:id", (req, res, next) => {
   const id = req.params.id;
   Items.findByIdAndDelete(id)
