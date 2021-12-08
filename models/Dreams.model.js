@@ -9,6 +9,10 @@ let dreamsSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "Items",
   },
+  dreamer: {
+    type: Schema.Types.ObjectId,
+    ref: "Users",
+  },
 });
 
 const Dreams = model("Dreams", dreamsSchema);
