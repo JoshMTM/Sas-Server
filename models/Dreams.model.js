@@ -5,6 +5,7 @@ let dreamsSchema = new Schema({
   description: String,
   date: String,
   image: String,
+  date: Date,
   items: {
     type: Schema.Types.ObjectId,
     ref: "Items",
