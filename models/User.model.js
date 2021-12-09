@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 
 // TODO: Please make sure you edit the user model to whatever makes sense in this case
 const userSchema = new Schema({
-  firsName: {
+  firstName: {
     type: String,
   },
   lastName: {
@@ -19,6 +19,11 @@ const userSchema = new Schema({
   image: {
     type: String,
   },
+  adrressline: String,
+  zipCode: String,
+  city: String,
+  state: String,
+  country: String,
   userDreams: [
     {
       type: Schema.Types.ObjectId,

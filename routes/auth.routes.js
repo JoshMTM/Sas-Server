@@ -7,7 +7,19 @@ const bcrypt = require("bcryptjs");
 const UserModel = require("../models/User.model");
 
 router.post("/signup", (req, res) => {
-  const { firstName, lastName, email, password, image } = req.body;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    image,
+    userDreams,
+    addressline,
+    zipCode,
+    city,
+    state,
+    country,
+  } = req.body;
   console.log(firstName, email, password);
 
   // -----SERVER SIDE VALIDATION ----------
@@ -39,7 +51,19 @@ router.post("/signup", (req, res) => {
   // creating a salt
   let salt = bcrypt.genSaltSync(10);
   let hash = bcrypt.hashSync(password, salt);
-  UserModel.create({ firsName, lastName, email, password: hash, image })
+  UserModel.create({
+    firstName,
+    lastName,
+    email,
+    password: hash,
+    image,
+    userDreams,
+    addressline,
+    zipCode,
+    city,
+    state,
+    country,
+  })
     .then((user) => {
       // ensuring that we don't share the hash as well with the user
       user.password = "***";
@@ -53,7 +77,7 @@ router.post("/signup", (req, res) => {
         });
       } else {
         res.status(500).json({
-          errorMessage: "Something went wrong! Go to sleep!",
+          errorMessage: "Something went wrong! Please try again!",
           message: err,
         });
       }
