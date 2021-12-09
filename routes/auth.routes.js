@@ -67,6 +67,7 @@ router.post("/signup", (req, res) => {
     .then((user) => {
       // ensuring that we don't share the hash as well with the user
       user.password = "***";
+      req.session.loggedInUser = user;
       res.status(200).json(user);
     })
     .catch((err) => {
@@ -173,6 +174,20 @@ router.get("/:userId/edit", (req, res, next) => {
 // will handle all get requests to http:localhost:5005/api/user
 router.get("/user", isLoggedIn, (req, res, next) => {
   res.status(200).json(req.session.loggedInUser);
+});
+
+router.get("/users/:id", (req, res, next) => {
+  const { id } = req.params;
+  UserModel.findById(id)
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
 });
 
 module.exports = router;
