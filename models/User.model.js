@@ -19,7 +19,7 @@ const userSchema = new Schema({
   image: {
     type: String,
   },
-  adrressline: String,
+  addressline: String,
   zipCode: String,
   city: String,
   state: String,

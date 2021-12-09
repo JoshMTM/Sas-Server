@@ -37,13 +37,14 @@ router.get("/dreams/:dreamId", (req, res, next) => {
 
 // Dreams Create (create)
 router.post("/dreams/new", (req, res, next) => {
-  const { title, description, image, items, dreamer } = req.body;
+  const { title, description, image, date, items, dreamer } = req.body;
   console.log(req.body);
   Dreams.create({
     title,
     description,
     image,
-    dreamer,
+    date,
+    dreamer: req.session.loggedInUser,
     items,
   })
     .then((response) => {
@@ -60,10 +61,10 @@ router.post("/dreams/new", (req, res, next) => {
 // Dream Update
 router.patch("/dreams/edit/:id", (req, res, next) => {
   const { id } = req.params;
-  const { title, description, image, items, dreamer } = req.body;
+  const { title, description, image, date, items, dreamer } = req.body;
   Dreams.findByIdAndUpdate(
     id,
-    { $set: { title, description, image, items, dreamer } },
+    { $set: { title, description, image, date, items, dreamer } },
     { new: true }
   )
     .then((response) => {
