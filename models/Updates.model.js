@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 let UpdatesSchema = new Schema({
-  description: { type: String, required: true },
+  message: { type: String, required: true },
   image: String,
   updatingUser: {
     type: Schema.Types.ObjectId,
@@ -13,9 +13,9 @@ let UpdatesSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Dream",
   },
+  image: String,
   date: {
-    type: Date,
-    required: true,
+    type: String,
   },
   comments: {
     type: Schema.Types.ObjectId,
