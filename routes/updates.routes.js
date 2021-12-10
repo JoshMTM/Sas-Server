@@ -7,6 +7,7 @@ const Updates = require("../models/Updates.model");
 // updates/post list (read)
 router.get("/updates", (req, res, next) => {
   Updates.find()
+    .populate("updatingUser")
     .populate("updatedDream")
     .populate("comments")
     .then((updates) => {
@@ -23,6 +24,7 @@ router.get("/updates", (req, res, next) => {
 // one Post/Update  (read)
 router.get("/update/:updateId", (req, res, next) => {
   Updates.findById(req.params.dreamId)
+    .populate("updatingUser")
     .populate("updatedDream")
     .populate("comments")
     .then((response) => {
@@ -38,11 +40,19 @@ router.get("/update/:updateId", (req, res, next) => {
 
 // Posts/Update Create (create)
 router.post("/updates/new", (req, res, next) => {
-  const { message, image, updatingUser, updatedDream, comments, likes } =
-    req.body;
+  const {
+    message,
+    description,
+    image,
+    updatingUser,
+    updatedDream,
+    comments,
+    likes,
+  } = req.body;
   console.log(req.body);
   Updates.create({
     message,
+    description,
     image,
     updatingUser,
     updatedDream,
