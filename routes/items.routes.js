@@ -35,7 +35,7 @@ router.get("/items/:itemId", (req, res, next) => {
 
 // Item Create (new)
 router.post("/items/new", (req, res, next) => {
-  const { name, description, qty, unit, dream } = req.body;
+  const { name, category, description, qty, unit, dream } = req.body;
   console.log(req.body);
   Items.create({
     name,
