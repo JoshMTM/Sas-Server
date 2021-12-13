@@ -110,7 +110,7 @@ router.post("/signin", (req, res) => {
   UserModel.findOne({ email })
     .then((userData) => {
       //check if passwords match
-      let doesItMatch = bcrypt.compareSync(password, userData.passwordHash);
+      let doesItMatch = bcrypt.compareSync(password, userData.password);
       //if it matches
       if (doesItMatch) {
         // req.session is the special object that is available to you

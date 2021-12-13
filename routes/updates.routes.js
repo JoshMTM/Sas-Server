@@ -41,9 +41,11 @@ router.get("/update/:updateId", (req, res, next) => {
 // Posts/Update Create (create)
 router.post("/updates/new", (req, res, next) => {
   const {
+    name,
     message,
     description,
     image,
+    date,
     updatingUser,
     updatedDream,
     comments,
@@ -51,9 +53,11 @@ router.post("/updates/new", (req, res, next) => {
   } = req.body;
   console.log(req.body);
   Updates.create({
+    name,
     message,
     description,
     image,
+    date,
     updatingUser,
     updatedDream,
     comments,
@@ -73,14 +77,24 @@ router.post("/updates/new", (req, res, next) => {
 // Post/Update Edit
 router.patch("/updates/edit/:id", (req, res, next) => {
   const { id } = req.params;
-  const { message, image, updatingUser, updatedDream, comments, likes } =
-    req.body;
+  const {
+    name,
+    message,
+    image,
+    date,
+    updatingUser,
+    updatedDream,
+    comments,
+    likes,
+  } = req.body;
   Updates.findByIdAndUpdate(
     id,
     {
       $set: {
+        name,
         message,
         image,
+        date,
         updatingUser,
         updatedDream,
         comments,

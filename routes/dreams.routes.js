@@ -14,7 +14,7 @@ router.get("/dreams", (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).json({
-        error: "Something went wrong",
+        error: "Something went wrong with the dreams",
         message: err,
       });
     });

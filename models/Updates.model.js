@@ -1,16 +1,18 @@
 const { Schema, model } = require("mongoose");
-const Items = require("./Items.model");
 const Users = require("./User.model");
 const Comments = require("./Comments.model");
+const Dreams = require("./Dreams.model");
 
 let UpdatesSchema = new Schema({
-  message: { type: String, required: true },
+  name: String,
+  message: { type: String },
   description: String,
   image: String,
   updatingUser: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: "Users",
   },
+  date: String,
 
   //Which dream does the comment belongs to??
   updatedDream: {

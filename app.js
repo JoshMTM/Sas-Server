@@ -30,7 +30,7 @@ app.use(
       maxAge: 1000 * 24 * 60 * 60, // your cookie will be cleared after these seconds
     },
     store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_URI || "mongodb://localhost/ReactTodosApp",
+      mongoUrl: process.env.MONGODB_URI || "mongodb://localhost/sas",
       // Time to Live for sessions in DB. After that time it will delete it!
       ttl: 24 * 60 * 60, // your session will be cleared after these seconds
     }),
