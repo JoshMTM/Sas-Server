@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
-const Items = require("./Items.model");
-const Users = require("./User.model");
+require("./Items.model");
+require("./User.model");
 
 let dreamsSchema = new Schema({
   title: { type: String, required: true },
@@ -17,7 +17,7 @@ let dreamsSchema = new Schema({
   ],
   dreamer: {
     type: Schema.Types.ObjectId,
-    ref: "Users",
+    ref: "User",
   },
 });
 

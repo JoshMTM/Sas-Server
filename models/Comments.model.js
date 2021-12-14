@@ -11,7 +11,7 @@ let commentsSchema = new Schema({
     ref: "Dream",
   },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
 });

@@ -8,7 +8,7 @@ let UpdatesSchema = new Schema({
   message: { type: String },
   description: String,
   image: String,
-  postImg: String,
+  ImgPost: String,
   updatingUser: {
     type: Schema.Types.ObjectId,
     ref: "Users",

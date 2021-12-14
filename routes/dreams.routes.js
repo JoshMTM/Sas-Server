@@ -6,6 +6,7 @@ const Dreams = require("../models/Dreams.model");
 
 // dreams list (read)
 router.get("/dreams", (req, res, next) => {
+  console.log("whatsup");
   Dreams.find()
     .populate("items")
     .populate("dreamer")
