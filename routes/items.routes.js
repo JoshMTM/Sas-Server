@@ -1,5 +1,6 @@
 const router = require("express").Router();
 
+const Dreams = require("../models/Dreams.model");
 const Items = require("../models/Items.model");
 
 // View routes:
@@ -45,7 +46,12 @@ router.post("/items/new", (req, res, next) => {
     dream,
   })
     .then((response) => {
-      res.status(200).json(response);
+      console.log(response);
+      Dreams.findByIdAndUpdate(dream, { $push: { items: response._id } }).then(
+        (response) => {
+          res.status(200).json(response);
+        }
+      );
     })
     .catch((err) => {
       res.status(500).json({

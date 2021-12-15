@@ -24,7 +24,7 @@ router.get("/dreams", (req, res, next) => {
 // one Dream  (read)
 router.get("/dreams/:dreamId", (req, res, next) => {
   Dreams.findById(req.params.dreamId)
-    .populate(items)
+    .populate("items")
     .then((response) => {
       res.status(200).json(response);
     })
