@@ -19,6 +19,8 @@ const userSchema = new Schema({
   image: {
     type: String,
   },
+  lat: String,
+  lon: String,
   addressline: String,
   zipCode: String,
   city: String,

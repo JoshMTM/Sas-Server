@@ -19,6 +19,8 @@ router.post("/signup", (req, res) => {
     city,
     state,
     country,
+    lat,
+    lon,
   } = req.body;
   console.log(firstName, email, password);
 
@@ -63,6 +65,8 @@ router.post("/signup", (req, res) => {
     city,
     state,
     country,
+    lat,
+    lon,
   })
     .then((user) => {
       // ensuring that we don't share the hash as well with the user
@@ -179,8 +183,23 @@ router.get("/user", isLoggedIn, (req, res, next) => {
 router.get("/users/:id", (req, res, next) => {
   const { id } = req.params;
   UserModel.findById(id)
+    .populate("userDreams")
     .then((user) => {
       res.status(200).json(user);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
+});
+
+router.get("/users", (req, res) => {
+  UserModel.find()
+    .populate("userDreams")
+    .then((users) => {
+      res.status(200).json(users);
     })
     .catch((err) => {
       res.status(500).json({
