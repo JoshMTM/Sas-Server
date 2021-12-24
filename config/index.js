@@ -20,12 +20,12 @@ module.exports = (app) => {
   app.set("trust proxy", 1);
 
   // controls a very specific header to pass headers from the frontend
-  app.use(
-    cors({
-      credentials: true,
-      origin: process.env.ORIGIN || "https://git.heroku.com/saslife.git",
-    })
-  );
+  // app.use(
+  //   cors({
+  //     credentials: true,
+  //     origin: process.env.ORIGIN || "https://git.heroku.com/saslife.git",
+  //   })
+  // );
 
   // In development environment the app logs
   app.use(logger("dev"));
